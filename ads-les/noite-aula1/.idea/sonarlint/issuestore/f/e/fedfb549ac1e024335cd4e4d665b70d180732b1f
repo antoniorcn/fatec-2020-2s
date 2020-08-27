@@ -1,0 +1,11 @@
+
+U	java:S106
+"9Replace this use of System.out or System.err by a logger.(±ËÒ8íÿÙèÂ.
+^
+java:S1075	"ARefactor your code to get this URI from a customizable parameter.(¹ÙõÑ8åÄÒèÂ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(ÿË„‹8”ÙÛèÂ.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(Õ¦Åıùÿÿÿÿ8à‘ÜèÂ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(›¼¿8­­ÚèÂ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(ª°±ú8úúÜèÂ.
+j
+java:S2095"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(•ºÔÈıÿÿÿÿ8ş€æèÂ.

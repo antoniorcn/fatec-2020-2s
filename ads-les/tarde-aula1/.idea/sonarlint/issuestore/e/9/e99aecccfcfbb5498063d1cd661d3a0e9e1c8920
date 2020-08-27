@@ -1,0 +1,6 @@
+
+j
+java:S2095"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(á£§âüÿÿÿÿ8Ê±áÂ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(’ë“‡8òÉ¸àÂ.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(Õ±±õúÿÿÿÿ8òÉ¸àÂ.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(ˆ²«–úÿÿÿÿ8™ÅàÂ.

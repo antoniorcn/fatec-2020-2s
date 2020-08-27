@@ -1,0 +1,6 @@
+
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(ÇÃ§åþÿÿÿÿ8ç¯ÂáÂ.
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(£Ù°ÿÿÿÿÿÿ8ƒú¿áÂ.
+W	java:S125"<This block of commented-out lines of code should be removed.(õ·÷]8”èáÂ.
+o
+java:S2095"MUse try-with-resources or close this "FileInputStream" in a "finally" clause.(¢±¡ýÿÿÿÿ8©¾áÂ.
