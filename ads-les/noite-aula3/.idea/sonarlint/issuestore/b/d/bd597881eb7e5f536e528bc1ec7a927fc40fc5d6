@@ -1,0 +1,8 @@
+
+c
+java:S2142D"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8Ô–Ä©Ç.
+U	java:S106+"9Replace this use of System.out or System.err by a logger.(Æ¼Ø°8ÀÍÁ©Ç.
+
+java:S1149!"_Replace the synchronized class "StringBuffer" by an unsynchronized one such as "StringBuilder".(Àëá¼ÿÿÿÿÿ8¯½©Ç.
+;
+java:S2119"Save and re-use this "Random".(–áÍÈ8ˆğ¬©Ç.
