@@ -1,0 +1,92 @@
+<html>
+	<body>
+		
+		<h1> Pesquisa de satisfação do Jogo </h1>
+		
+		<form>
+			<table>
+				<tr>
+					<td>Dê uma nota de satisfação para com o jogo, (1) para muito insatisfeito e (4) muito satifeito.</td>
+					<td><input type="text" name="satisfacao"/></td>
+				</tr>
+				<tr>
+					<td>Em qual nível de dificuldade você jogou?</td>
+					<td>
+						<select name="nivel-dificuldade">
+							<option value="smdificil">Super Master Dificil</option>
+							<option value="dificil">Dificil</option>
+							<option value="medio">Médio</option>
+							<option value="facil">Fácil</option>
+							<option value="superfacil">Fácil demais</option>
+							<option value="nenem">Nenêm de Fraldas</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Qual fase acho mais difícil</td>
+					<td><input type="text" name="fase-mais-dificil"/></td>
+				</tr>
+				<tr>
+					<td>Gostou da história do jogo ?</td>
+					<td>
+						<input type="radio" name="gostou-historia">Sim</input>
+						<input type="radio" name="gostou-historia">Não</input>
+					</td>
+				</tr>
+				<tr>
+					<td>Caso tenha encontrado algum bug, por favor relate aqui:</td>
+					<td>
+						<select name="tipo-bug">
+							<option value="mov">Movimentação</option>
+							<option value="tela">Atualização de Tela</option>
+							<option value="som">Som</option>
+							<option value="info">Informações</option>
+							<option value="inimigo">Personagem inimigo</option>
+							<option value="outro">Outro</option>
+						</select>
+						<textarea name="bug" rows="5"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>Em qual plataforma você gostaria de jogar este jogo?</td>
+					<td>
+						<input type="checkbox" name="xboxone">Xbox One</input>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="checkbox" name="ps4">PS4</input>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="checkbox" name="switch">Nintendo Switch</input>
+						<input type="checkbox" name="xbox360">Xbox 360</input>
+						<input type="checkbox" name="ps3">PS3</input>
+						<input type="checkbox" name="wiiu">Wii U</input>
+						<input type="checkbox" name="android">Android</input>
+						<input type="checkbox" name="iphone">IPhone</input>
+						<input type="checkbox" name="pc">PC</input>
+					</td>
+				</tr>
+				<tr>
+					<td>Quais fases conseguiu completar ?</td>
+					<td>
+						<input type="checkbox" name="fase1">Fase 1</input>
+						<input type="checkbox" name="fase2">Fase 2</input>
+						<input type="checkbox" name="fase3">Fase 3</input>
+						<input type="checkbox" name="fase4">Fase 4</input>
+						<input type="checkbox" name="fase5">Fase 5</input>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Enviar formulário"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
