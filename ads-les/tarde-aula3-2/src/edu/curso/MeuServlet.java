@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/meuservlet")
 public class MeuServlet implements Servlet {
+	private ServletConfig config;
+	
 	public MeuServlet() { 
 		System.out.println("Construtor Executado...");
 	}
@@ -22,16 +24,17 @@ public class MeuServlet implements Servlet {
 
 	@Override
 	public ServletConfig getServletConfig() {
-		return null;
+		return this.config;
 	}
 
 	@Override
 	public String getServletInfo() {
-		return null;
+		return MeuServlet.class.getName();
 	}
 
 	@Override
-	public void init(ServletConfig arg0) throws ServletException {
+	public void init(ServletConfig config) throws ServletException {
+		this.config = config;
 		System.out.println("Init do Servlet Executado...");
 	}
 
