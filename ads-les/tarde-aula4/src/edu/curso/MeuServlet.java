@@ -2,6 +2,7 @@ package edu.curso;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -17,8 +18,6 @@ public class MeuServlet extends GenericServlet {
 			ServletResponse res) throws ServletException, IOException {
 		PrintWriter out = res.getWriter();
 		out.println("<h1>bem vindo ao servlet Generic da aula 4</h1>");
-		out.flush();
-		
+		out.flush();	
 	}
-
 }
