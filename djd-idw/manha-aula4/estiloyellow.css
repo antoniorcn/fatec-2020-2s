@@ -1,0 +1,57 @@
+* { 
+	font-size: 90%;
+}
+
+h1 {color: cyan;}
+/* li p {
+	color: yellow;
+	font-weight: bold;
+	font-size: 120%;
+	text-shadow: 1px 1px black;
+}  */
+
+.amarelo { 
+	color: yellow;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+.laranja { 
+	color: orange;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+.sombra { 
+	text-shadow: 1px 1px black;
+}
+
+#curso1, #curso2 { 
+	border: 2px solid blue;
+	margin-right: 80%;
+}
+
+[href] { 
+	color: purple;
+	font-style: italic;
+}
+
+
+h1::after { 
+	border: 2px solid gray;
+	content: 'aaaaaaaaaaaaaaaaaaaa';
+	background-color: gray;
+}
+
+h1:hover { 
+	background-color: yellow;
+	display: none;
+}
+
+li { 
+	height: 0%;
+}
+
+li:hover { 
+	height: 100%;
+}

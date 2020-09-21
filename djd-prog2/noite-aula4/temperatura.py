@@ -1,5 +1,3 @@
-temperatura = 19
-
 # <= -10;  Congelando
 # < 5;    Muito frio
 # < 10;   Frio
@@ -23,6 +21,7 @@ temperatura = 19
 #                     print("Calor")
 #                 else:
 #                     print("Muito Calor")
+temperatura = 19
 
 if temperatura <= -10:
     print("Congelando")
