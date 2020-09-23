@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List, edu.curso.entidade.Incidente" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,6 +12,19 @@
 	<body>
 		<div class="container">
 			<h1>Gestão de Incidentes</h1>
+			<%
+				String msg = (String)session.getAttribute("MENSAGEM");
+				List<Incidente> localizados = (List<Incidente>)session.getAttribute("LOCALIZADOS");
+				if (msg != null) {
+			%>
+					<div class="alert alert-success" role="alert">
+	  					<h4 class="alert-heading">Informação</h4>
+					  <p><%=msg%></p>
+					</div>
+			<%
+					session.setAttribute("MENSAGEM", null);
+				}
+			%>
 			<form action="./incidenteController" method="get">
 				<div class="form-group">
 					<label>ID</label>
@@ -51,10 +65,38 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary">Enviar</button>
+					<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
+					<button type="submit" class="btn btn-primary" name="cmd" value="pesquisar">Pesquisar</button>
 				</div>
 			</form>
-			
+		</div>
+		<div class="container">
+			<% if (localizados != null && localizados.size() > 0)  { %>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Titulo</th>
+							<th>Abertura</th>
+							<th>Fechamento</th>
+							<th>Status</th>
+							<th>Categoria</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for(Incidente incidente : localizados) { %>
+							<tr>
+								<td><%=incidente.getId()%></td>
+								<td><%=incidente.getTitulo()%></td>
+								<td><%=incidente.getAbertura()%></td>
+								<td><%=incidente.getFechamento()%></td>
+								<td><%=incidente.getStatus()%></td>
+								<td><%=incidente.getCategoria()%></td>
+							</tr>
+						<% } %>
+					</tbody>
+				</table>
+			<% } %>
 		</div>
 	</body>
 </html>

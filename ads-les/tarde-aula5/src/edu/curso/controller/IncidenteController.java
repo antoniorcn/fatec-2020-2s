@@ -1,5 +1,6 @@
 package edu.curso.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ public class IncidenteController extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req,
-			HttpServletResponse res) { 
-		
+			HttpServletResponse res) throws IOException { 
+		String cmd = req.getParameter("cmd");
 		ServletContext app = getServletContext();
 		List<Incidente> incidentes = (List<Incidente>)app.getAttribute("LISTA");
 		if (incidentes == null) { 
@@ -41,8 +42,24 @@ public class IncidenteController extends HttpServlet {
 		} catch(Exception e) { 
 			e.printStackTrace();
 		}
-
-		incidentes.add(i);
-		System.out.printf("Lista de incidentes possui %d itens%n", incidentes.size());
+		String msg = null;
+		if ("adicionar".equals(cmd)) { 
+			incidentes.add(i);
+			msg = "O incidente foi registrado com sucesso";
+		} else if ("pesquisar".equals(cmd)) {
+			List<Incidente> tempLista = new ArrayList<>();
+			msg = "Nenhum incidente localizado";
+			for (Incidente tempInci : incidentes) { 
+				if (tempInci.getTitulo().contains(i.getTitulo())) { 
+					tempLista.add(tempInci);
+					msg = "Incidente localizado";
+				}
+			}
+			req.getSession().setAttribute("LOCALIZADOS", tempLista);
+		}
+		
+		req.getSession().setAttribute("MENSAGEM", msg);
+		
+		res.sendRedirect("./incidente.jsp");
 	}
 }
