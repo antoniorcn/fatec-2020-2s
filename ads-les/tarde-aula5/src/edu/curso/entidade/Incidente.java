@@ -9,6 +9,7 @@ public class Incidente {
 	private LocalDateTime abertura;
 	private LocalDateTime fechamento;
 	private String categoria;
+	private String status;
 	
 	public long getId() {
 		return id;
@@ -50,5 +51,12 @@ public class Incidente {
 	}
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

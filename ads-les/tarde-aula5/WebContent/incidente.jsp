@@ -11,7 +11,7 @@
 	<body>
 		<div class="container">
 			<h1>Gestão de Incidentes</h1>
-			<form>
+			<form action="./incidenteController" method="get">
 				<div class="form-group">
 					<label>ID</label>
 					<input type="text" name="txtID" class="form-control"/>
