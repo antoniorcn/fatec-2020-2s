@@ -1,0 +1,55 @@
+* {
+    margin-left: 5%;
+    margin-right: 50px;
+ }
+
+p {
+    margin-right: 100px;
+    margin-left: 10%;
+    text-align: justify;
+    color: #606060;
+}
+
+#p1 { 
+    font-style: italic;
+}
+
+/* h4 ~ p { 
+    font-size: 200%;
+} */
+
+h1 { 
+    font-size: 500%;
+    color: blue;
+}
+
+/* h1::after { 
+    content: "-------------------------------------";
+    background-color: yellow;
+    color: black;
+    font-size: 10%;
+} */
+
+h1:hover { 
+    color: green;
+    font-size: 530%;
+}
+
+/* input[name~="a"] { 
+    margin-left: 2%;
+    margin-right: 2%;
+} */
+
+/* Definições das Sombras */
+.sombra-grande { 
+    text-shadow: 3px 3px grey;
+}
+
+.sombra-pequena {
+    text-shadow: 1px 1px grey;
+}
+
+h2 { 
+    text-decoration: underline;
+    color: green;
+}

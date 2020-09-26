@@ -1,0 +1,11 @@
+p {
+    margin-right: 100px;
+    margin-left: 100px;
+    text-align: justify;
+}
+h1 { 
+    font-size: 500%;
+    text-shadow: 3px 3px black;
+    color: gray;
+}
+h2 { text-decoration: underline;}
