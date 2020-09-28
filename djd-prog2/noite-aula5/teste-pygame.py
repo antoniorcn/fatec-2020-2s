@@ -26,5 +26,5 @@ while True:             # Loop do Jogo
     # Capturar eventos
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
-            exit()
+            pygame.quit()
 
