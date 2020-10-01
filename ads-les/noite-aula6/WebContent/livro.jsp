@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List, edu.curso.entidade.Livro" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@
 	<div class="container">
 		<h1>Gestão de Livros</h1>
 		<%
+			List<Livro> livros = (List<Livro>)session.getAttribute("LIVROS");
 			String msg = (String)session.getAttribute("MENSAGEM");
 			if (msg != null) {
 		%>
@@ -69,8 +71,35 @@
 					<option value="sextante">Sextante</option>
 				</select>
 			</div>			
-			<button type="submit">Adicionar</button>	
+			<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
+			<button type="submit" class="btn btn-primary" name="cmd" value="pesquisar">Pesquisar</button>
 		</form>
 	</div>
+	<% if (livros != null && !livros.isEmpty()) {%>
+		<div class="container">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Titulo</th>
+						<th>Autor</th>
+						<th>Gênero Literário</th>
+						<th>Editora</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% for (Livro l : livros) {%>
+						<tr>
+							<td><%=l.getId()%></td>
+							<td><%=l.getTitulo()%></td>
+							<td><%=l.getAutor()%></td>
+							<td><%=l.getGenero()%></td>
+							<td><%=l.getEditora()%></td>
+						</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	<% } %>
 </body>
 </html>
