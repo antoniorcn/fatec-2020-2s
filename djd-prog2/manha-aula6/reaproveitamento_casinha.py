@@ -10,9 +10,6 @@ def ponto_na_tela(x, y):
 
 
 def desenhar_casinha(x, y=0):
-    # Calcular Regras
-    # x = 500
-    # y = 400
     altura = 100
     largura = 100
     altura_telhado = altura * 3//4
@@ -22,20 +19,29 @@ def desenhar_casinha(x, y=0):
     y2 = y1 - altura_telhado
     x3 = x1 + largura
     y3 = y1
-    # Pintar na Tela
     pygame.draw.rect(tela, VERMELHO, ((x1, y1), (largura, altura)), 0)
     pygame.draw.line(tela, VERMELHO, (x1, y1), (x2, y2), 2)
     pygame.draw.line(tela, VERMELHO, (x2, y2), (x3, y3), 2)
-    # dentro_tela = x1 > 0 and x1 < 800 and y1 > 0 and y1 < 600 and x2 > 0 and x2 < 800 and y2 > 0 and y2 < 800
-    # dentro_tela = 0 < x1 < 800 and 0 < y1 < 600 and 0 < x2 < 800 and 0 < y2 < 800
     dentro_tela = ponto_na_tela(x1, y1) and ponto_na_tela(x2, y2) and ponto_na_tela(x3, y3)
     return dentro_tela
 
 
 jogando = True
 while jogando:          # Loop do Jogo
-    d1 = desenhar_casinha(260, 150)
+    # Calcular Regras
+
+    # Pintar na tela
+    # x = 50
+    # y = 125
+    for j in range(3):
+        for i in range(7):
+            x = 110 * i + 50
+            y = 185 * j + 125
+            d1 = desenhar_casinha(x, y)
+        # y = y + 185
+        # x = x + 110
     pygame.display.update()
+
     # Capturar Eventos
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
