@@ -8,16 +8,16 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-public class WebInitializer implements WebApplicationInitializer{
+public class WebInitializer implements WebApplicationInitializer {
 	@Override
-	public void onStartup(ServletContext srvCtx) throws ServletException {
+	public void onStartup(ServletContext ctx) throws ServletException {	
 		AnnotationConfigWebApplicationContext appCtx 
-				= new AnnotationConfigWebApplicationContext();
+			= new AnnotationConfigWebApplicationContext();
 		appCtx.register(Config.class);
-		appCtx.setServletContext(srvCtx);
-		Dynamic srv = srvCtx.addServlet("dispatcher", 
-				new DispatcherServlet(appCtx));
-		srv.addMapping("/");
-		srv.setLoadOnStartup(1);
+		appCtx.setServletContext(ctx);
+		Dynamic dispatcher = 
+				ctx.addServlet("dispatcher", new DispatcherServlet(appCtx));
+		dispatcher.addMapping("/");
+		dispatcher.setLoadOnStartup(1);
 	}
 }
