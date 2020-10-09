@@ -28,16 +28,11 @@ public class ExemploLayout extends Application {
 		// fp.setHgap(10);
 		// fp.setVgap(10);
 		// fp.getChildren().addAll(lblNome, txtNome, btnOk);
-		
 		stage.setScene(scn);
 		stage.setTitle("Janela de Teste");
-		stage.show();
-		
+		stage.show();	
 	}
-	
 	public static void main(String[] args) {
 		Application.launch(ExemploLayout.class, args);
 	}
-
-
 }
