@@ -1,0 +1,82 @@
+<htm>
+    <body>
+        <h1>Teste de pagina</h1>
+
+        <p>Paragrafo 1</p>
+
+        <script type="text/javascript">
+            document.write("Ola ...");
+            // alert("Esta é uma mensagem de alerta");
+            // var nome = prompt("Digite seu nome", "nome...");
+            var a = 10;
+            let b = 20;
+            const c = 30;
+            console.log("A: ", a, "  B:", b, "  C:", c);
+
+            // a = a + 1;    // a++
+            // a++;
+            // console.log("A: ", a);
+            // console.log("A: ", ++a);
+            // console.log("A: ", a);
+
+            let d = "10";
+
+            // function soma(n1, n2) {
+            //     let s = n1 + n2; 
+            //     //console.log("N1: ", n1, " N2: ", n2, " Soma: ", s);
+            //     console.log(`N1: ${n1}  N2: ${n2}  Soma: ${s}`);
+            //     return s;
+            // }
+
+            // const soma = (n1, n2) => { 
+            //     let s = n1 + n2; 
+            //     console.log(`N1: ${n1}  N2: ${n2}  Soma: ${s}`);
+            //     return s;
+            // }
+
+            function multiplicar(n1, n2) { 
+                return n1 * n2;
+            }
+
+            function somar(n1, n2) { 
+                return n1 + n2;
+            }
+
+            function calcular(n1, n2, operacao) { 
+                return operacao(n1, n2);
+            }
+
+            let s = calcular(2, 3,
+                 (a, b) => {return a ** b;}
+                 );
+            
+            // let s = calcular(2, 3,
+            // (a, b) => a ** b
+            // );
+            console.log(`A soma de 10 e 15 é : ${s}`);
+
+            // a = a + 1;
+            // a++;
+            // a += 1;
+            // console.log("Processando...");
+            // let i = 0;
+            // while (i < 10000000000) { 
+            //     i = i + 1;
+            // }
+            // console.log("Terminado o processamento...")
+
+            // for (let i = 0; i <= 10; i++) { 
+            //     console.log(i);
+            // }
+
+            // if (a > b) { 
+            //     console.log("A é maior que B");
+            // } else { 
+            //     console.log("A não é maior que B");
+            // }
+
+            // soma(30, 45);
+
+        </script>
+    </body>
+</htm>
