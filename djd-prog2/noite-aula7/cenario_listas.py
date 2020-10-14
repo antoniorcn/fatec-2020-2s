@@ -27,7 +27,6 @@ while jogar:
     # Calcular Regras
 
     # Desenhar
-
     for lin in range(len(cenario)):
         linha = cenario[lin]
         for col in range(len(linha)):

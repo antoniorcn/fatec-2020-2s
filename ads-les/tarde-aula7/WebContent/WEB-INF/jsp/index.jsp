@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Inicio do Sistema</title>
+	<meta charset="ISO-8859-1">
+	<title>Inicio do Sistema</title>
 </head>
 <body>
 	<jsp:include page="./header.jsp"/>

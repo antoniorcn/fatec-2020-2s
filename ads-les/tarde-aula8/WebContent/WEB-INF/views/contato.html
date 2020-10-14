@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Agenda de Contato</title>
+	</head>
+	<body>
+		<h1>Agenda de Contato</h1>
+		<form 	th:object="${CONTATO_ATUAL}" 
+				th:action="@{/contato/adicionar}"
+				method="post">
+			<label>Nome: </label>
+			<input th:field="*{nome}"/>
+			
+			<label>Email: </label>
+			<input th:field="*{email}"/>
+			
+			<label>Telefone: </label>
+			<input th:field="*{telefone}"/>
+			
+			<button type="submit">Enviar</button>
+		</form>
+	</body>
+</html>
