@@ -46,4 +46,11 @@ public class SalaAula {
 	public void setCapacidade(int capacidade) {
 		this.capacidade = capacidade;
 	}
+	
+	public String toString()  {
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.format("Numero: %s  Capacidade: %d",
+				getNumero(), getCapacidade()));
+		return sb.toString();
+	}
 }

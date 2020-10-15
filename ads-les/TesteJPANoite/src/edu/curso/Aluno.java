@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,11 +50,17 @@ public class Aluno {
 		this.nascimento = nascimento;
 	}
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	public SalaAula getSalaAula() {
 		return salaAula;
 	}
 	public void setSalaAula(SalaAula salaAula) {
 		this.salaAula = salaAula;
+	}
+	
+	public String toString() { 
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.format("RA: %s\tNome: %s", getRa(), getNome()));
+		return sb.toString();
 	}
 }
