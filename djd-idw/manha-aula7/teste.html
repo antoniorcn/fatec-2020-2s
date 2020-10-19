@@ -1,0 +1,67 @@
+<html>
+<!--    <head>
+        <script type="text/javascript" 
+            src="./outro_arquivo.js"></script>
+    </head>
+-->
+    <body>
+        <h1> Teste de ES6 </h1>
+        <p> Isto é um teste de Javacript </p>
+
+        <script type="text/javascript">
+            // alert("A página será recarregada");
+            // window.location = "http://www.uol.com.br";
+            const WIDTH = 800;
+            var casas = 20;
+            var a = "<p>texto'</p>";
+            var b = '<p>texto"</p>';
+            var i = 20;
+            // var t = "<p>Este texto mostra o valor de i = " + i + "</p>";
+            var t = `<p>Este texto mostra o valor de i = ${i} </p>`;
+            var largura = WIDTH / casas;
+            var velX = WIDTH / 1000;
+            var x = x + velX;
+            if (x > WIDTH) { 
+                velX = velX * -1;
+            }
+
+            var y = 10;
+
+            y = y + 1;
+            y++;
+
+            for (i = 0; i < 10; i++) { 
+                document.write(`<p>${i}</p>`);
+            }
+
+            document.write(a);
+            document.write(b);
+            document.write(t);
+
+            var b = true;
+            var link = {nome: "Link", vidas: 5, 
+                        hp: 100, mochila: ["espada", "escudo"]};
+            // var nome = prompt("Como você se chama ?");
+            // console.log("Variavel nome possui: ", nome);
+            document.write("<p>Hp: " + link.hp + "</p>");
+            document.write(`<p>Vidas: ${link.vidas}</p>`);
+            document.write(`<p>Nome: ${link["nome"]}</p>`);
+
+            var personagens = ["zelda", "link", "boss"];
+            personagens.push("Mario");
+            var p = personagens[3];
+            document.write(`<p>Personagem escolhido:${p}</p>`);
+
+            a = a / 4;
+            console.log('a: ', a);
+            var j;
+            var h = null;
+            let k = 10;
+            const pi = 3.1415;
+            console.log("J: ", j);
+            console.log("H: ", h);
+            // document.write("<h3>Olá " + nome + " seja bem vindo</h3>");
+        </script>
+
+    </body>
+</html>
