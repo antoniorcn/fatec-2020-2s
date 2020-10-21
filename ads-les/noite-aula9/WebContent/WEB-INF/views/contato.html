@@ -2,24 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="ISO-8859-1">
-		<link th:href="@{'/resources/css/bootstrap.min.css'}" rel="stylesheet"/>
+		<link 	th:href="@{'/resources/css/bootstrap.min.css'}" 
+				rel="stylesheet"/>
 		<title>Agenda de Contatos</title>
 	</head>
 	<body>
 		<div class="container">
 			<h2>Agenda de Contatos</h2>
-			<form>
+			<form	th:object="${CONTATO_ATUAL}" 
+					th:action="@{'/contato'}" method="post">
 				<div class="form-group">
 					<label>Nome</label>
-					<input type="text" class="form-control"/>
+					<input 	type="text" class="form-control" th:field="*{nome}"/>
 				</div>
 				<div class="form-group">
 					<label>Telefone</label>
-					<input type="text" class="form-control"/>
+					<input type="text" class="form-control" th:field="*{telefone}"/>
 				</div>
 				<div class="form-group">
 					<label>Email</label>
-					<input type="text" class="form-control"/>
+					<input type="text" class="form-control" th:field="*{email}"/>
 				</div>
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary">Adicionar</button>
