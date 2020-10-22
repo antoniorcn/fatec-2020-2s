@@ -1,10 +1,10 @@
 package edu.curso;
 
 public class Contato {
-	private Long id;
-	private String nome;
-	private String telefone;
-	private String email;
+	private Long id = new Long(0);
+	private String nome = "";
+	private String telefone = "";
+	private String email = "";
 	
 	public Long getId() {
 		return id;

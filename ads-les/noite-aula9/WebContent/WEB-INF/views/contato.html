@@ -24,10 +24,32 @@
 					<input type="text" class="form-control" th:field="*{email}"/>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary">Adicionar</button>
-					<button type="submit" class="btn btn-primary">Pesquisar</button>
+					<button type="submit" name="cmd" value="adicionar"
+							class="btn btn-primary">Adicionar</button>
+					<button type="submit" name="cmd" value="pesquisar"
+							class="btn btn-primary">Pesquisar</button>
 				</div>
 			</form>
+		</div>
+		<div class="container">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nome</th>
+						<th>Telefone</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="contato : ${LISTA_CONTATO}">
+						<td th:text="${contato.id}">.</td>
+						<td th:text="${contato.nome}">.</td>
+						<td th:text="${contato.telefone}">.</td>
+						<td th:text="${contato.email}">.</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</body>
 </html>
