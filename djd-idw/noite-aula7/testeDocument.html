@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <script type="text/javascript" src="./testeDocument.js">
+        </script>
+    </head>
+    <body>
+        <h1>Teste de Document com Javascript</h1>
+        <img src="./gatogordo.png"/>
+        <p id="p1">Teste de Document</p>
+        <label>Nome: </label>
+        <input id="txtNome"/>
+
+        <script type="text/javascript">
+            const parag1 = document.getElementById("p1");
+            console.log("Paragrafo P1 Capturado Depois: ", parag1);
+            parag1.style = "color: red; font-size:200%";
+            parag1.innerHTML = "Novo Paragrafo de Teste do document";
+
+            const i1 = document.getElementById("txtNome");
+            console.log("Input1: ", i1);
+
+
+
+            function aoExecutarBotao() { 
+                console.log("Esta fazendo algo");
+                console.log(i1.value);
+            }
+        </script>
+
+        <button onclick="aoExecutarBotao();">Faz Algo</button> 
+    </body>
+</html>

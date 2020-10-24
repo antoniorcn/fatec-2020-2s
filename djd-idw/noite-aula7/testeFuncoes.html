@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            let a = 10;
+            let b = "10";
+
+            if (a === b) { 
+                console.log("São iguais");
+            } else { 
+                console.log("São diferentes");
+            }
+
+            function divide(dividendo, divisor) { 
+                let resultado = dividendo/divisor;
+                console.log(dividendo + 
+                " dividido por " + divisor + 
+                " é: ", resultado);
+                return resultado;
+            }
+
+            let divideArrow = (d1, d2) => {
+                let resultado = d1 / d2;
+                console.log("Arrow function Divide sendo executada");
+                console.log(`${d1} dividido por ${d2} é ${resultado}`);
+            };
+
+            divideArrow(50, 7);
+
+            let outroNomeFuncao = divide;
+
+            let r1 = divide(20, 6);
+            let r2 = divide(10, 4);
+
+            let r3 = outroNomeFuncao(25, 3);
+
+            console.log("Resultado da função na 1ª chamada: ", r1);
+            console.log("Resultado da função na 2ª chamada: ", r2);
+            console.log("Resultado da função na 3ª chamada: ", r3);
+
+        </script>
+    </head>
+    <body>
+        <h1>Teste de Funções com Javascript</h1>
+
+        <p id="p1">Teste de funções</p>
+    </body>
+</html>
