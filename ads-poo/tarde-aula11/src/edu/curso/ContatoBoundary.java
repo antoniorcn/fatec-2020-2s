@@ -2,8 +2,6 @@ package edu.curso;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,7 +15,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.parser.DateParser;
 
 public class ContatoBoundary extends Application 
 			implements EventHandler<ActionEvent> {
@@ -30,10 +27,9 @@ public class ContatoBoundary extends Application
 	
 	private Button btnAdicionar = new Button("Adicionar");
 	private Button btnPesquisar = new Button("Pesquisar");
-	
-	private List<Contato> lista = new ArrayList<>();
-	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	private Control control = new Control();
 	
 	@Override
 	public void start(Stage stage) { 
@@ -102,13 +98,11 @@ public class ContatoBoundary extends Application
 	public void handle(ActionEvent e) {
 		if (e.getTarget() == btnAdicionar) {
 			Contato c = boundaryParaContato();
-			lista.add(c);
-			System.out.printf("A lista agora tem %d contatos%n", lista.size());
+			control.adicionar(c);
 		} else if (e.getTarget() == btnPesquisar) { 
-			for (Contato c : lista) { 
-				if (c.getNome().contains(txtNome.getText())) { 
-					contatoParaBoundary(c);
-				}
+			Contato c = control.pesquisar(txtNome.getText());
+			if (c != null) { 
+				contatoParaBoundary(c);
 			}
 		}
 	}
