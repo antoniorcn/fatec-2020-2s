@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,25 +41,28 @@ public class ContatoController {
 	
 	@PostMapping("/contato")
 	public ModelAndView postContato(
-			@ModelAttribute("CONTATO_ATUAL") Contato c,
+			@ModelAttribute("CONTATO_ATUAL") @Valid Contato c,
+			BindingResult result,
 			@RequestParam("cmd") String cmd) {
 		ModelAndView mv = new ModelAndView("contato");
 		mv.addObject("LISTA_CONTATO", lista);
-		if ("adicionar".equals(cmd)) { 
-			lista.add(c);
-			System.out.printf("Contato adicionado, agora "
-				+ "há %d contatos na lista%n", lista.size());
-			mv.addObject("CONTATO_ATUAL", new Contato());			
-		} else if ("pesquisar".equals(cmd)) { 
-			List<Contato> listaTemporaria = new ArrayList<>();
-			for (Contato contato : lista) { 
-				if (contato.getNome().contains(c.getNome())) { 
-					listaTemporaria.add(contato);
+		if (! result.hasErrors()) { 
+			if ("adicionar".equals(cmd)) { 
+				lista.add(c);
+				System.out.printf("Contato adicionado, agora "
+					+ "há %d contatos na lista%n", lista.size());
+				mv.addObject("CONTATO_ATUAL", new Contato());			
+			} else if ("pesquisar".equals(cmd)) { 
+				List<Contato> listaTemporaria = new ArrayList<>();
+				for (Contato contato : lista) { 
+					if (contato.getNome().contains(c.getNome())) { 
+						listaTemporaria.add(contato);
+					}
 				}
+				mv.addObject("LISTA_CONTATO", listaTemporaria);
+				mv.addObject("CONTATO_ATUAL", c);
 			}
-			mv.addObject("LISTA_CONTATO", listaTemporaria);
-			mv.addObject("CONTATO_ATUAL", c);
-		}		
+		}
 		return mv;
 	}
 }
