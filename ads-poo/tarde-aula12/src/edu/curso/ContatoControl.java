@@ -10,10 +10,12 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ContatoControl {
 	
-	private List<Contato> lista = new ArrayList<>();
+	private ObservableList<Contato> lista = FXCollections.observableArrayList();
 	
 	private LongProperty id = new SimpleLongProperty();
 	private StringProperty nome = new SimpleStringProperty();
@@ -72,5 +74,8 @@ public class ContatoControl {
 	}
 	public ObjectProperty<LocalDate> getNascimentoProperty() {
 		return nascimento;
+	}
+	public ObservableList<Contato> getLista() { 
+		return lista;
 	}
 }

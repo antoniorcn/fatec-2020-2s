@@ -5,12 +5,16 @@ import java.time.format.DateTimeFormatter;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -30,6 +34,8 @@ public class ContatoBoundary extends Application
 	private Button btnPesquisar = new Button("Pesquisar");
 	
 	private ContatoControl control = new ContatoControl();
+	
+	private TableView<Contato> table = new TableView<>();
 	
 	@Override
 	public void start(Stage stage) { 
@@ -55,7 +61,8 @@ public class ContatoBoundary extends Application
         btnGravar.setOnAction(this);
         btnPesquisar.setOnAction(this);
         
-        panePrincipal.setCenter(paneCampos);
+        panePrincipal.setTop(paneCampos);
+        panePrincipal.setCenter(table);
         
         stage.setScene(scn);
         stage.setTitle("Agenda de Contatos");
@@ -75,6 +82,34 @@ public class ContatoBoundary extends Application
         Bindings.bindBidirectional(txtNascimento.textProperty(), 
         							control.getNascimentoProperty(),
         							dateConverter);
+        
+        TableColumn<Contato, Long> colId = new TableColumn<>("Id");
+//        colId.setCellValueFactory( ( item ) -> { 
+//        	return new ReadOnlyStringWrapper( String.valueOf(item.getValue().getId()));
+//        });
+        colId.setCellValueFactory( new PropertyValueFactory<Contato, Long>("id") );
+        
+        TableColumn<Contato, String> colNome = new TableColumn<>("Nome");
+        colNome.setCellValueFactory( new PropertyValueFactory<Contato, String>("nome") );
+        
+        TableColumn<Contato, String> colTelefone = new TableColumn<>("Telefone");
+        colTelefone.setCellValueFactory( new PropertyValueFactory<Contato, String>("telefone") );        
+        
+        TableColumn<Contato, String> colEmail = new TableColumn<>("Email");
+        colEmail.setCellValueFactory( new PropertyValueFactory<Contato, String>("email") );
+        
+        TableColumn<Contato, String> colNascimento = new TableColumn<>("Nascimento");
+        colNascimento.setCellValueFactory(
+        		(item) -> {
+        			return new ReadOnlyStringWrapper( 
+        					item.getValue().getNascimento().format(dtf)
+        					);
+        		}
+        		);
+        
+        table.getColumns().addAll(colId, colNome, colTelefone, colEmail, colNascimento);
+        table.setItems(control.getLista());
+        
 	}
 	
 	public static void main(String[] args) {
