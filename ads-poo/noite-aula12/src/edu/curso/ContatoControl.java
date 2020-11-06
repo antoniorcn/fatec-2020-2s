@@ -10,10 +10,12 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ContatoControl {
 	
-	private List<Contato> lista = new ArrayList<>();
+	private ObservableList<Contato> lista = FXCollections.observableArrayList();
 	
 	private LongProperty idProperty = new SimpleLongProperty(0);
 	private StringProperty nomeProperty = new SimpleStringProperty("João");
@@ -44,11 +46,11 @@ public class ContatoControl {
 	public void adicionar() { 
 		// Contato c = getContato();
 		// lista.add(c);
-		lista.add(getContato());
+		getLista().add(getContato());
 	}
 	
 	public void pesquisarPorNome() {
-		for (Contato c : lista) { 
+		for (Contato c : getLista()) { 
 			if (c.getNome().contains(nomeProperty.get())) { 
 				setContato(c);
 			}
@@ -69,5 +71,9 @@ public class ContatoControl {
 	}
 	public ObjectProperty<LocalDate> getNascimentoProperty() {
 		return nascimentoProperty;
+	}
+
+	public ObservableList<Contato> getLista() {
+		return lista;
 	}
 }

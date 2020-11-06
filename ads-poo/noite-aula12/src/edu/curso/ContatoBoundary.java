@@ -1,10 +1,13 @@
 package edu.curso;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -12,10 +15,15 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LongStringConverter;
@@ -31,10 +39,12 @@ public class ContatoBoundary extends Application
 	private Button btnAdicionar = new Button("Adicionar");
 	private Button btnPesquisar = new Button("Pesquisar");
 	private ContatoControl control = new ContatoControl();
-	
+	private TableView<Contato> table = new TableView<>();
+ 	
 	public void vincularCampos() { 
 		StringConverter<? extends Number> idConverter = new LongStringConverter();
 		StringConverter<LocalDate> dateConverter = new LocalDateStringConverter();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Bindings.bindBidirectional(	txtId.textProperty(),
 				control.getIdProperty(),
 				(StringConverter<Number>)idConverter);	
@@ -44,6 +54,41 @@ public class ContatoBoundary extends Application
 		Bindings.bindBidirectional(txtNascimento.textProperty(), 
 				control.getNascimentoProperty(), 
 				dateConverter);
+		
+		TableColumn<Contato, Long> colId = new TableColumn<>("ID");
+		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		
+		TableColumn<Contato, String> colNome = new TableColumn<>("Nome");
+		colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		
+		TableColumn<Contato, String> colTelefone = new TableColumn<>("Telefone");
+		colTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+		
+		TableColumn<Contato, String> colEmail = new TableColumn<>("Email");
+		colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		
+		TableColumn<Contato, String> colNascimento = new TableColumn<>("Nascimento");
+//		colNascimento.setCellValueFactory(
+//				new Callback<TableColumn.CellDataFeatures<Contato, String>, ObservableValue<String>>() {
+//					
+//					@Override
+//					public ObservableValue<String> call(CellDataFeatures<Contato, String> param) {
+//						return new SimpleStringProperty(param.getValue().getNascimento().toString()); 
+//					}
+//				});
+		
+		colNascimento.setCellValueFactory(
+				(item) -> {return new ReadOnlyStringWrapper(item.getValue().getNascimento().format(dtf));}
+				);
+		
+//		(item) -> { 
+//			String texto = item.getValue().getNascimento().format(dtf);
+//			return new ReadOnlyStringWrapper( texto ); 
+//			}
+		
+		table.getColumns().addAll(colId, colNome, colTelefone, colEmail, colNascimento);
+		
+		table.setItems( control.getLista() );
 	}
 	
 	@Override
@@ -71,7 +116,8 @@ public class ContatoBoundary extends Application
 		btnAdicionar.setOnAction(this);
 		btnPesquisar.setOnAction(this);
 		
-		bp.setCenter(paneCampos);
+		bp.setTop(paneCampos);
+		bp.setCenter(table);
 		
 		stage.setScene(scn);
 		stage.setTitle("Agenda de Contatos");
