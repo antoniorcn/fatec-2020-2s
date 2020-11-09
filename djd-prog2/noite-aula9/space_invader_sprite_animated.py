@@ -2,7 +2,8 @@ import pygame
 
 tela = pygame.display.set_mode((800, 600))
 nave = pygame.image.load("./nave-small.png")
-asteroid = pygame.image.load("./asteroid-small.png")
+img_asteroids = pygame.image.load("./asteroid-spritesheet.png")
+asteroid = img_asteroids.subsurface((42, 42), (92, 92))
 
 
 class Inimiga(pygame.sprite.Sprite):
@@ -40,15 +41,40 @@ a2 = Asteroid()
 a2.rect.x = 300
 
 inimigas = pygame.sprite.Group(i1, i2)
-asteroids = pygame.sprite.Group(a1, a2)
+asteroids = pygame.sprite.Group(a1)
+
+clk = pygame.time.Clock()
 
 jogar = True
+gid = 0
+pausa_animacao = 100
+contador = 0
 while jogar:
 
     # Calcular regras
     asteroids.update()
 
-    obj = pygame.sprite.groupcollide(asteroids, inimigas, True, True)
+    if contador > pausa_animacao:
+        top = 40
+        margin = 40
+        dist_v = 12
+        dist_h = 12
+        largura = 92
+        altura = 92
+        colunas = 8
+        coluna = gid % colunas
+        linha = gid // colunas
+        x = margin + (coluna * (largura + dist_h))
+        y = top + (linha * (altura + dist_v))
+        a1.image = img_asteroids.subsurface((x, y), (largura, altura))
+        gid = gid + 1
+        if gid >= 32:
+            gid = 0
+        contador = 0
+
+    contador = contador + 1
+
+    obj = pygame.sprite.groupcollide(asteroids, inimigas, False, True)
     # if obj:
     #     print("Colidiu", obj)
     #     obj.kill()
@@ -57,6 +83,8 @@ while jogar:
     inimigas.draw(tela)
     asteroids.draw(tela)
     pygame.display.update()
+
+    # clk.tick(20)
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
