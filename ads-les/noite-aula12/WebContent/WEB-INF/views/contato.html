@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<link 	th:href="@{'/resources/css/bootstrap.min.css'}" 
+				rel="stylesheet"/>
+		<link rel="icon" th:href="@{'/resources/favicon.ico'}"/>
+		<title>Agenda de Contatos</title>
+	</head>
+	<body>
+		<div class="container">
+			<h2>Agenda de Contatos</h2>
+			<form	th:object="${CONTATO_ATUAL}" 
+					th:action="@{'/contato'}" method="post">
+				<div th:if="${#fields.hasAnyErrors() and MOSTRAR_ERROS}" class="alert alert-danger" role="alert">
+					<h4 class="alert-heading">Erros</h4>
+					<p>Verifique os problemas antes de continuar</p>
+					<hr/>
+					<div th:each="error: ${#fields.detailedErrors()}">
+						<span class="mb-0" th:text="${error.message}"></span>
+					</div>
+				</div>					
+				<div class="form-group">
+					<label>Nome</label>
+					<input 	type="text" class="form-control" th:field="*{nome}"/>
+				</div>
+				<div class="form-group">
+					<label>Telefone</label>
+					<input type="text" class="form-control" th:field="*{telefone}"/>
+				</div>
+				<div class="form-group">
+					<label>Email</label>
+					<input type="text" class="form-control" th:field="*{email}"/>
+				</div>
+				<div class="form-group">
+					<button type="submit" name="cmd" value="adicionar"
+							class="btn btn-primary">Adicionar</button>
+					<button type="submit" name="cmd" value="pesquisar"
+							class="btn btn-primary">Pesquisar</button>
+				</div>
+			</form>
+		</div>
+		<div class="container">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nome</th>
+						<th>Telefone</th>
+						<th>Email</th>
+						<th>Comandos</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="contato : ${LISTA_CONTATO}">
+						<td th:text="${contato.id}">.</td>
+						<td th:text="${contato.nome}">.</td>
+						<td th:text="${contato.telefone}">.</td>
+						<td th:text="${contato.email}">.</td>
+						<td><a class="btn btn-danger"
+							th:href="@{'/contato/remover/' + ${contato.id}}">
+							Remover</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
