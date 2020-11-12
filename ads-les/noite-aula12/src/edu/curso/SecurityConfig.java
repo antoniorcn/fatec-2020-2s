@@ -1,11 +1,13 @@
 package edu.curso;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig 
 	extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	UserDetailsService userDetailsService;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -22,25 +27,20 @@ public class SecurityConfig
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) {
 		try {
-			auth.inMemoryAuthentication()
-			.withUser("user")
-			.password(passwordEncoder().encode("user"))
-			.roles("USER")
-			.and()
-			.withUser("manager")
-			.password(passwordEncoder().encode("manager"))
-			.roles("USER", "MANAGER");
-	   } catch (Exception e) {
+			auth.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/contato").hasRole("USER")
-		.antMatchers("/contato/remover/*").hasRole("MANAGER")
-		.antMatchers("/admin").hasRole("MANAGER")
+		.antMatchers("/contato/remover/*").hasAnyRole("MANAGER")
+		.antMatchers("/contato/*").hasAnyRole("USER", "MANAGER")
+		.antMatchers("/admin/*").hasAnyRole("MANAGER")
 		.antMatchers("/*").authenticated().and()
 		.formLogin()
 		.usernameParameter("username")
