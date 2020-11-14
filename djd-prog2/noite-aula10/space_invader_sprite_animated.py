@@ -49,19 +49,42 @@ class SpriteSheetAnimation:
         return img
 
 
-class Inimiga(pygame.sprite.Sprite):
+class Aliada(pygame.sprite.Sprite):
     def __init__(self, c, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.cor = c
-        self.image = nave
+        self.vel_x = 0
+        self.animacao_parada = SpriteSheetAnimation(img_naves, pausa=30,
+                                                     top=9, margin=8, dist_v=1,
+                                                     dist_h=1, largura=24, altura=23, colunas=6,
+                                                     lista_gids=[69, 70, 71, 0, 1, 2, 1, 0, 71, 70])
+        self.animacao_direita = SpriteSheetAnimation(img_naves, pausa=30,
+                                             top=9, margin=8, dist_v=1,
+                                             dist_h=1, largura=24, altura=23, colunas=6,
+                                             lista_gids=range(72))
+        self.animacao_esquerda = SpriteSheetAnimation(img_naves, pausa=30,
+                                             top=9, margin=8, dist_v=1,
+                                             dist_h=1, largura=24, altura=23, colunas=6,
+                                             lista_gids=range(71, -1, -1))
+        self.animacao = self.animacao_parada
+        self.image = self.animacao.get_image()
         self.rect = pygame.Rect((x, y), self.image.get_size())
-        self.animacao = SpriteSheetAnimation(img_naves, pausa=30,
-                                             top=8, margin=8, dist_v=1,
-                                             dist_h=1, largura=24, altura=24, colunas=6,
-                                             lista_gids=[0, 1, 2, 3, 4, 5, 4, 3, 2, 1])
 
     def update(self):
         self.image = self.animacao.get_image()
+        self.rect.move_ip(self.vel_x, 0)
+
+    def processar_eventos(self, e):
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_RIGHT:
+                self.animacao = self.animacao_direita
+                self.vel_x = 1
+            if e.key == pygame.K_LEFT:
+                self.animacao = self.animacao_esquerda
+                self.vel_x = -1
+        if e.type == pygame.KEYUP:
+            if e.key in [pygame.K_LEFT, pygame.K_RIGHT]:
+                self.animacao = self.animacao_parada
+                self.vel_x = 0
 
 
 class Asteroid(pygame.sprite.Sprite):
@@ -87,13 +110,12 @@ class Asteroid(pygame.sprite.Sprite):
             self.vel_y = 1
 
 
-i1 = Inimiga((255, 255, 0), 700, 0)
-i2 = Inimiga((0, 0, 255), 150, 300)
+player = Aliada((255, 255, 0), 400, 550)
 a1 = Asteroid()
 a2 = Asteroid()
 a2.rect.x = 300
 
-inimigas = pygame.sprite.Group(i1, i2)
+jogadores = pygame.sprite.Group(player)
 asteroids = pygame.sprite.Group(a1)
 
 clk = pygame.time.Clock()
@@ -103,20 +125,21 @@ while jogar:
 
     # Calcular regras
     asteroids.update()
-    inimigas.update()
+    jogadores.update()
 
-    obj = pygame.sprite.groupcollide(asteroids, inimigas, False, True)
+    obj = pygame.sprite.groupcollide(asteroids, jogadores, False, True)
     # if obj:
     #     print("Colidiu", obj)
     #     obj.kill()
 
     tela.fill((0, 0, 0))
-    inimigas.draw(tela)
+    jogadores.draw(tela)
     asteroids.draw(tela)
     pygame.display.update()
 
     # clk.tick(20)
 
     for e in pygame.event.get():
+        player.processar_eventos(e)
         if e.type == pygame.QUIT:
             jogar = False
