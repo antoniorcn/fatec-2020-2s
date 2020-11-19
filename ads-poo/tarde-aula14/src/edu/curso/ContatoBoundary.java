@@ -9,6 +9,8 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -113,9 +115,22 @@ public class ContatoBoundary implements
 	@Override
 	public void handle(ActionEvent e) {
 		if (btnGravar == e.getTarget()) { 
-			control.adicionar();
+			try {
+				control.adicionar();
+			} catch (DAOException e1) {
+				Alert a = new Alert(AlertType.ERROR, "Erro ao gravar o contato");
+				a.show();
+				e1.printStackTrace();
+			}
 		} else if (btnPesquisar == e.getTarget()){ 
-			control.pesquisarPorNome();
+			try {
+				control.pesquisarPorNome();
+			} catch (DAOException e1) {
+				Alert a = new Alert(AlertType.ERROR, "Erro ao pesquisar o contato");
+				a.show();
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 }
