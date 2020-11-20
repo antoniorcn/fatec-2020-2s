@@ -3,12 +3,15 @@ package edu.curso;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
 
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -21,7 +24,7 @@ import javafx.collections.ObservableList;
 
 public class ContatoControl {
 	
-	private static final String URLCON = "jdbc:mariadb://localhost:3306/agendadb?allowMultiQueries=true";
+	private static final String URLCON = "jdbc:mariadb://localhost:3306/contatodb";
 	private static final String USER = "root";
 	private static final String PASS = "";
 	
@@ -86,10 +89,23 @@ public class ContatoControl {
 	}
 	
 	public void pesquisarPorNome() {
-		for (Contato c : getLista()) { 
-			if (c.getNome().contains(nomeProperty.get())) { 
+		try {
+			Connection con = DriverManager.getConnection(URLCON, USER, PASS);
+			String sql = "SELECT * FROM contato WHERE nome like ?";
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, "%" + this.nomeProperty.get() + "%");
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) { 
+				Contato c = new Contato();
+				c.setId(rs.getLong("id"));
+				c.setNome(rs.getString("nome"));
+				c.setTelefone(rs.getString("telefone"));
+				c.setEmail(rs.getString("email"));
+				c.setNascimento(rs.getDate("nascimento").toLocalDate());
 				setContato(c);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	

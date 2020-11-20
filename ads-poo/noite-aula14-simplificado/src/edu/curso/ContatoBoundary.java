@@ -3,6 +3,8 @@ package edu.curso;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.google.gson.Gson;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -39,6 +41,7 @@ public class ContatoBoundary implements EventHandler<ActionEvent>,
 	private ContatoControl control = new ContatoControl();
 	private TableView<Contato> table = new TableView<>();
 	private Principal principal;
+	private Gson gson = new Gson();
  	
 	public void vincularCampos() { 
 		StringConverter<? extends Number> idConverter = new LongStringConverter();
@@ -115,6 +118,12 @@ public class ContatoBoundary implements EventHandler<ActionEvent>,
 		
 		tela.setTop(paneCampos);
 		tela.setCenter(table);
+		
+
+		String js = "{\"id\":1,\"nome\":\"Antonio Rodrigues\",\"telefone\":\"(11) 0000-1111\",\"email\":\"antonio@teste.com\",\"nascimento\":{\"year\":2000,\"month\":1,\"day\":1}}";
+		Contato c = gson.fromJson(js, Contato.class);
+		control.setContato(c);
+		
 	}
 	
 	private static void maxField(final TextField textField, final Integer length) {
@@ -159,6 +168,9 @@ public class ContatoBoundary implements EventHandler<ActionEvent>,
 	public void handle(ActionEvent e) {
 		if (e.getTarget() == btnAdicionar) { 
 			System.out.println("Botão adicionar foi pressionado");
+			String j = gson.toJson(control.getContato());
+			System.out.println("JSON do Contato");
+			System.out.println(j);
 			control.adicionar();
 		} else if (e.getTarget() == btnPesquisar) { 
 			System.out.println("Botão pesquisar foi pressionado");

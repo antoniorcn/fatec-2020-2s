@@ -16,9 +16,7 @@ import javafx.stage.Stage;
 public class Principal extends Application 
 					implements EventHandler<ActionEvent>,
 					AssinanteComando {
-	private VBox panePrincipal = new VBox();
-	private Pane paneMenu = new Pane();
-	private Pane paneTela = new Pane();
+	private BorderPane panePrincipal = new BorderPane();
 	
 	private ContatoBoundary contatoBoundary = new ContatoBoundary(this);
 	private TelaB telaB = new TelaB(this);
@@ -40,8 +38,7 @@ public class Principal extends Application
 	public void start(Stage stage) { 
 		Scene scn = new Scene(panePrincipal, 800, 600);
 		
-		panePrincipal.getChildren().add(paneMenu);
-		paneMenu.getChildren().add(mnuPrincipal);
+		panePrincipal.setTop(mnuPrincipal);
 		mnuPrincipal.getMenus().addAll(mnuCadastro, mnuAjuda);
 		
 		mnuCadastro.getItems().addAll(mnuContato, mnuOutros, mnuSair);
@@ -51,10 +48,6 @@ public class Principal extends Application
 		mnuOutros.setOnAction(this);
 		mnuCreditos.setOnAction(this);
 		mnuSair.setOnAction(this);
-		
-		panePrincipal.getChildren().add(paneTela);
-		
-		this.telaContext();
 		
 		stage.setScene(scn);
 		stage.setTitle("Tela principal");
@@ -80,8 +73,7 @@ public class Principal extends Application
 	}
 	
 	public void telaContext() { 
-		paneTela.getChildren().clear();
-		paneTela.getChildren().add(tela.getTela());
+		panePrincipal.setCenter(tela.getTela());
 	}
 
 	@Override
