@@ -1,8 +1,8 @@
 import pygame
 
 tela = pygame.display.set_mode((800, 600))
-sprite_sheet_sara = pygame.image.load("./sara.png")
-sprite_sheet_tiles = pygame.image.load("./basictiles.png")
+sprite_sheet_sara = pygame.image.load("./sara.png").convert_alpha()
+sprite_sheet_tiles = pygame.image.load("./basictiles.png").convert_alpha()
 estado = "JOGANDO"
 
 GRAVIDADE = 0.009
