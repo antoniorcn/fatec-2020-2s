@@ -5,6 +5,8 @@ sprite_sheet_sara = pygame.image.load("./sara.png")
 sprite_sheet_tiles = pygame.image.load("./basictiles.png")
 estado = "JOGANDO"
 
+GRAVIDADE = 0.009
+
 cenario = [
     "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
     "P..............................................................................P",
@@ -15,7 +17,7 @@ cenario = [
     "P..............................................................................P",
     "P..............................................................................P",
     "P..............................................................................P",
-    "P..............................................................................P",
+    "P..PPPPP.......................................................................P",
     "P..............................................................................P",
     "P..............................................................................P",
     "P..............................................................................P",
@@ -37,16 +39,34 @@ def pegar_imagem_por_gid(spritesheet, gid=0, largura=64, altura=64,
     return img
 
 
-def desenhar_cenario(surface, matriz):
+def desenhar_cenario(matriz, grupo):
     for linha, nivel in enumerate(matriz):
         for coluna, caracter in enumerate(nivel):
-            gid = 22
-            if caracter == 'P':
-                gid = 15
-            x = coluna * 64
-            y = linha * 64
-            img = pegar_imagem_por_gid(sprite_sheet_tiles, gid, colunas=8)
-            surface.blit(img, (x, y))
+            spr = None
+            if caracter == '.':
+                spr = Fundo(coluna, linha)
+            elif caracter == 'P':
+                spr = Plataforma(coluna, linha)
+            if spr is not None:
+                grupo.add(spr)
+
+
+class Fundo(pygame.sprite.Sprite):
+    def __init__(self, coluna, linha):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pegar_imagem_por_gid(sprite_sheet_tiles, 22, colunas=8)
+        x = coluna * 64
+        y = linha * 64
+        self.rect = pygame.Rect((x, y), (64, 64))
+
+
+class Plataforma(pygame.sprite.Sprite):
+    def __init__(self, coluna, linha):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pegar_imagem_por_gid(sprite_sheet_tiles, 15, colunas=8)
+        x = coluna * 64
+        y = linha * 64
+        self.rect = pygame.Rect((x, y), (64, 64))
 
 
 class Sara(pygame.sprite.Sprite):
@@ -63,11 +83,12 @@ class Sara(pygame.sprite.Sprite):
         self.parado_direita = [39, 40, 41, 42, 43, 44, 45]
         self.tempo_animacao = 5
         self.contador_tempo = 0
-        self.lista_frames = self.andando_cima
+        self.lista_frames = self.parado_direita
         self.image = self.get_frame()
         self.vel_x = 0
         self.vel_y = 0
         self.rect = pygame.Rect((200, 200), self.image.get_size())
+        self.intencao_pos = list(self.rect.center)
 
     def get_frame(self):
         self.contador_tempo += 1
@@ -81,9 +102,18 @@ class Sara(pygame.sprite.Sprite):
                                     largura=64, altura=64, colunas=13)
 
     def update(self):
+        self.vel_y += GRAVIDADE
         self.image = self.get_frame()
-        self.rect.left += self.vel_x
-        self.rect.top += self.vel_y
+        self.intencao_pos[0] = self.rect.center[0] + self.vel_x
+        self.intencao_pos[1] = self.rect.center[1] + self.vel_y
+
+    def teste_colisao(self, grupo):
+        pos_anterior = list(self.rect.center)
+        self.rect.center = self.intencao_pos
+        for obj in grupo:
+            if type(obj) == Plataforma and pygame.sprite.collide_rect(self, obj):
+                self.rect.center = pos_anterior
+                self.intencao_pos = pos_anterior
 
     def processar_evento(self, e):
         if e.type == pygame.KEYDOWN:
@@ -114,21 +144,59 @@ class Sara(pygame.sprite.Sprite):
                 self.vel_y = 0
 
 
+class Camera:
+    def __init__(self, posicao, tamanho):
+        self.window = pygame.Rect(posicao, tamanho)
+        self.posicao = posicao
+        self.offset_x = 0
+        self.offset_y = 0
+        self.folha_escura = pygame.Surface(self.window.size)
+        self.folha_escura.fill((0, 0, 0))
+        self.area_desenho = pygame.Surface(self.window.size)
+
+    def na_janela(self, r):
+        return self.window.colliderect(r)
+
+    def iniciar_desenho(self):
+        self.area_desenho.blit(self.folha_escura, (0, 0))
+
+    def desenhar_grupo(self, grupo):
+        for spr in grupo:
+            if self.na_janela(spr.rect):
+                self.area_desenho.blit(spr.image, (spr.rect.x - self.offset_x,
+                                                   spr.rect.y - self.offset_y))
+
+    def mover(self, posicao):
+        self.window.center = posicao
+        self.offset_x = self.window.x
+        self.offset_y = self.window.y
+
+    def pintar(self, tela):
+        tela.blit(self.area_desenho, self.posicao)
+
+
 player1 = Sara()
 player1.rect.topleft = (300, 300)
 jogadores = pygame.sprite.Group(player1)
+blocos = pygame.sprite.Group()
+desenhar_cenario(cenario, blocos)
+camera = Camera((0, 0), (800, 600))
 jogar = True
 clk = pygame.time.Clock()
 while jogar:
     # Calcular regras
     if estado == "JOGANDO":
         jogadores.update()
+        player1.teste_colisao(blocos)
+        camera.mover(player1.rect.center)
+
 
     # Pintar na tela
     if estado == "JOGANDO":
-        tela.fill((0, 0, 0))
-        desenhar_cenario(tela, cenario)
-        jogadores.draw(tela)
+        camera.iniciar_desenho()
+        camera.desenhar_grupo(blocos)
+        camera.desenhar_grupo(jogadores)
+        camera.pintar(tela)
         pygame.display.update()
 
     # clk.tick(60)
