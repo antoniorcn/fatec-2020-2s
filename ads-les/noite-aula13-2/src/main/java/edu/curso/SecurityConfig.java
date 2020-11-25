@@ -38,9 +38,9 @@ public class SecurityConfig
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/contato/remover/*").hasAnyRole("MANAGER")
-		.antMatchers("/contato/*").hasAnyRole("USER", "MANAGER")
-		.antMatchers("/admin/*").hasAnyRole("MANAGER")
+		.antMatchers("/contato/remover/*").hasAnyAuthority("MANAGER")
+		.antMatchers("/contato/*").hasAnyAuthority("USER", "MANAGER")
+		.antMatchers("/admin/*").hasAnyAuthority("MANAGER")
 		.antMatchers("/*").authenticated().and()
 		.formLogin()
 		.usernameParameter("username")

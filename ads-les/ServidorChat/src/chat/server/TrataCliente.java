@@ -6,19 +6,27 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class TrataCliente implements Runnable {
+public class TrataCliente implements Runnable, Subject {
 
 	private Socket cliente;
-	private Subject subject;
+	private Assinante assinante;
+	private BufferedReader buf;
+	private OutputStream out;
+	private InputStreamReader reader;
 	
 	public TrataCliente(Socket cliente) { 
 		this.cliente = cliente;
+		try {
+		reader = new InputStreamReader(cliente.getInputStream());
+		out = cliente.getOutputStream();
+		buf = new BufferedReader(reader);
+			this.escreverParaTelnet("Bem vindo você se conectou no servidor");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String lerDoTelnet() throws IOException { 
-		InputStreamReader reader = 
-				new InputStreamReader(cliente.getInputStream());
-		BufferedReader buf = new BufferedReader(reader);
 		if (buf.ready()) { 
 			return buf.readLine();
 		} else { 
@@ -26,36 +34,32 @@ public class TrataCliente implements Runnable {
 		}
 	}
 	
-	public void escreverTelnet(String texto) throws IOException { 
-		OutputStream out = cliente.getOutputStream();
-		out.write(texto.concat("\n").getBytes());
+	public void escreverParaTelnet(String texto) throws IOException { 
+		out.write(texto.concat("\r\n").getBytes());
 		out.flush();
 	}
 	
 	@Override
 	public void run() {	
-		InputStreamReader reader = new InputStreamReader(System.in);
-		BufferedReader bfr = new BufferedReader(reader);
 		while (true) { 
 			try { 
 				String linha = this.lerDoTelnet();
+				// System.out.println(linha);
 				if (linha != null) { 
 					System.out.println(linha);
+					this.assinante.update(linha, this);
 				}
-				
-				if (bfr.ready()) { 
-					String line = bfr.readLine();
-					// this.escrever(line);
-					this.subject.update(line, this);
-				}
+				Thread.sleep(1);
 			} catch (IOException e) { 
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
+	public void setAssinante(Assinante subject) {
+		this.assinante = subject;
 	}
 
 }

@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Servidor implements Subject {
+public class Servidor implements Assinante {
 	
 	private List<TrataCliente> listaClientes = new ArrayList<>();
 	private ServerSocket server;
@@ -18,7 +18,9 @@ public class Servidor implements Subject {
 			Socket soc = server.accept();
 			System.out.println("Cliente conectado");
 			TrataCliente tr = new TrataCliente(soc);
-			tr.setSubject(this);
+			Thread t1 = new Thread(tr);
+			t1.start();
+			tr.setAssinante(this);
 			listaClientes.add(tr);
 		}
 	}
@@ -26,7 +28,7 @@ public class Servidor implements Subject {
 	public void update(String msg, TrataCliente self) throws IOException { 
 		for (TrataCliente tr : listaClientes) { 
 			if (tr != self) { 
-				tr.escreverTelnet(msg);
+				tr.escreverParaTelnet(msg);
 			}
 		}
 	}
