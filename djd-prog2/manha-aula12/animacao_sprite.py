@@ -1,11 +1,19 @@
 import pygame
+import os
 
+pygame.init()
+
+os.environ['SDL_VIDEO_CENTERED'] = '1'
 tela = pygame.display.set_mode((800, 600))
 sprite_sheet_sara = pygame.image.load("./sara.png").convert_alpha()
 sprite_sheet_tiles = pygame.image.load("./basictiles.png").convert_alpha()
 sprite_sheet_characters = pygame.image.load("./characters.png").convert_alpha()
 
+font = pygame.font.SysFont('arial', 48, False, False)
+
 estado = "JOGANDO"
+qtd_vidas = 5
+qtd_tiros = 10
 
 GRAVIDADE = 0.009
 
@@ -44,7 +52,7 @@ cenario_inimigos = [
     "................................................................................",
     "................................................................................",
     "................................................................................",
-    "...EGEGEGFF......E...............E......................G................G......",
+    "...EGEGEGFF.....................................................................",
     "................................................................................",
 ]
 
@@ -59,6 +67,24 @@ def pegar_imagem_por_gid(spritesheet, gid=0, largura=64, altura=64,
     r = pygame.Rect((x, y), (largura, altura))
     img = spritesheet.subsurface(r)
     return img
+
+
+def desenhar_mapa(matriz, personagem, surface):
+    for linha, conteudo_linha in enumerate(matriz):
+        for coluna, caracter in enumerate(conteudo_linha):
+            x = coluna * 4
+            y = linha * 4
+            if caracter == "P":
+                pygame.draw.rect(surface, (255, 0, 0), ((x, y), (4, 4)), 0)
+            elif caracter == "G":
+                pygame.draw.rect(surface, (0, 255, 0), ((x, y), (4, 4)), 0)
+            elif caracter == "E":
+                pygame.draw.rect(surface, (200, 200, 200), ((x, y), (4, 4)), 0)
+            elif caracter == "F":
+                pygame.draw.rect(surface, (255, 255, 255), ((x, y), (4, 4)), 0)
+    px = (personagem.rect.centerx // 64) * 4
+    py = (personagem.rect.centery // 64) * 4
+    pygame.draw.rect(surface, (255, 255, 0), ((px, py), (4, 4)), 0)
 
 
 def desenhar_cenario(matriz, grupo):
@@ -172,9 +198,11 @@ class Tiro(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.animacao = Animacao([60, 61], tempo_animacao=50)
-        self.image = self.get_image()
+        self.angulo = 0
+        self.image = pygame.transform.rotate(self.get_image(), self.angulo)
         self.vel_x = 1
         self.vida = 400
+        self.rect_temp = pygame.Rect((x, y), self.image.get_size())
         self.rect = pygame.Rect((x, y), self.image.get_size())
 
     def get_image(self):
@@ -182,8 +210,16 @@ class Tiro(pygame.sprite.Sprite):
         return pegar_imagem_por_gid(sprite_sheet_tiles, frame, colunas=8)
 
     def update(self):
-        self.rect.x += self.vel_x
-        self.image = self.get_image()
+        self.rect_temp.centerx += self.vel_x
+        self.angulo += 1
+        # if self.angulo > 360:
+        #    self.angulo = 0
+        self.angulo %= 360
+        self.image = pygame.transform.rotate(self.get_image(), self.angulo)
+        x = self.rect_temp.centerx - self.image.get_width() // 2
+        y = self.rect_temp.centery - self.image.get_height() // 2
+        self.rect = pygame.Rect((x, y), self.image.get_size())
+        # pygame.draw.rect(self.image, (255, 0, 0), ((0, 0), self.image.get_size()), 2)
         self.vida -= 1
         if self.vida <= 0:
             self.kill()
@@ -193,10 +229,6 @@ class Sara(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.frame_indice = 0
-        self.andando_cima = [104, 105, 106, 107, 108, 109, 110, 111, 112]
-        self.parado_cima = [1]
-        self.andando_baixo = [130, 131, 132, 133, 134, 135, 136, 137, 138]
-        self.parado_baixo = [27]
         self.andando_esquerda = [117, 118, 119, 120, 121, 122, 123, 124, 125]
         self.parado_esquerda = [14]
         self.andando_direita = [143, 144, 145, 146, 147, 148, 149, 150, 151]
@@ -234,6 +266,7 @@ class Sara(pygame.sprite.Sprite):
             if type(obj) == Plataforma and pygame.sprite.collide_rect(self, obj):
                 self.rect.center = pos_anterior
                 self.intencao_pos = pos_anterior
+                self.vel_y = 0
 
     def processar_evento(self, e):
         if e.type == pygame.KEYDOWN:
@@ -244,10 +277,8 @@ class Sara(pygame.sprite.Sprite):
                 self.lista_frames = self.andando_direita
                 self.vel_x = 1
             if e.key == pygame.K_UP:
-                self.lista_frames = self.andando_cima
                 self.vel_y = -1
             if e.key == pygame.K_DOWN:
-                self.lista_frames = self.andando_baixo
                 self.vel_y = 1
         if e.type == pygame.KEYUP:
             if e.key == pygame.K_LEFT:
@@ -257,10 +288,8 @@ class Sara(pygame.sprite.Sprite):
                 self.lista_frames = self.parado_direita
                 self.vel_x = 0
             if e.key == pygame.K_UP:
-                self.lista_frames = self.parado_cima
                 self.vel_y = 0
             if e.key == pygame.K_DOWN:
-                self.lista_frames = self.parado_baixo
                 self.vel_y = 0
 
 
@@ -306,6 +335,7 @@ desenhar_cenario(cenario_inimigos, inimigos)
 camera = Camera((0, 0), (800, 600))
 jogar = True
 clk = pygame.time.Clock()
+
 while jogar:
     # Calcular regras
     if estado == "JOGANDO":
@@ -313,8 +343,17 @@ while jogar:
         jogadores.update()
         tiros.update()
         player1.teste_colisao(blocos)
+        pygame.sprite.groupcollide(inimigos, tiros, True, True)
         camera.mover(player1.rect.center)
+        if pygame.sprite.spritecollide(player1, inimigos, True):
+            qtd_vidas -= 1
+        if qtd_vidas <= 0:
+            estado = "GAMEOVER"
+        if len(inimigos) <= 0:
+            estado = "VITORIA"
 
+    txt_vidas = font.render("Vidas: " + str(qtd_vidas), True, (255, 255, 0))
+    txt_tiros = font.render("Tiros: " + str(qtd_tiros), True, (255, 255, 0))
 
     # Pintar na tela
     if estado == "JOGANDO":
@@ -324,6 +363,24 @@ while jogar:
         camera.desenhar_grupo(jogadores)
         camera.desenhar_grupo(tiros)
         camera.pintar(tela)
+        tela.blit(txt_vidas, (50, 0))
+        tela.blit(txt_tiros, (550, 0))
+        desenhar_mapa(cenario, player1, tela)
+        desenhar_mapa(cenario_inimigos, player1, tela)
+        pygame.display.update()
+    elif estado in ['GAMEOVER', 'VITORIA']:
+        camera.iniciar_desenho()
+        camera.desenhar_grupo(blocos)
+        camera.desenhar_grupo(inimigos)
+        camera.desenhar_grupo(jogadores)
+        camera.desenhar_grupo(tiros)
+        camera.pintar(tela)
+        if estado == 'GAMEOVER':
+            txt_gameover = font.render("G A M E  O V E R", True, (255, 0, 0))
+            tela.blit(txt_gameover, (225, 200))
+        else:
+            txt_vitoria = font.render("V O C Ê   V E N C E U", True, (255, 255, 0))
+            tela.blit(txt_vitoria, (175, 200))
         pygame.display.update()
 
     # clk.tick(60)
@@ -339,8 +396,10 @@ while jogar:
                 else:
                     estado = "JOGANDO"
             if e.key == pygame.K_SPACE:
-                tiro = Tiro(player1.rect.x, player1.rect.centery)
-                tiros.add(tiro)
+                if qtd_tiros > 0:
+                    qtd_tiros -= 1
+                    tiro = Tiro(player1.rect.x, player1.rect.centery)
+                    tiros.add(tiro)
         player1.processar_evento(e)
 
 
